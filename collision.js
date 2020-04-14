@@ -42,7 +42,7 @@ for (let i = 0; i < 20; i++) {
   let box = {
     x: i * 300 + 500, //space between blocks
     y: Math.random() * canvas.height + 150,
-    width: Math.random() * 70 + 90, //range between 120 and 170
+    width: Math.random() * 70 + 90, //range between block sizes
     height: 30,
 }
 boxes.push(box);}
@@ -61,12 +61,12 @@ function init (){
         velY: 0,
         jumping: false,
         grounded: false,
-        direction: "r"
+        direction: "r"  
     };
 }
 
 const platform2 = new Image();
-platform2.src = "./images/platform2.png";
+platform2.src = "./images/new platform.png";
 
 const background = new Image ()
 background.src="./images/SFIWU.png"
