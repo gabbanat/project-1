@@ -12,7 +12,7 @@ var canvas = document.querySelector("canvas"),
         y: height - 15,
         width: 25,
         height: 25,
-        speed: 3,
+        speed: 5,
         velX: 0,
         velY: 0,
         jumping: false,
@@ -20,10 +20,22 @@ var canvas = document.querySelector("canvas"),
     },
     keys = [],
     friction = 0.8,
-    gravity = 0.3;
+    gravity = 0.1;
 
 var boxes = [];
+setInterval (function (){
 
+boxes.push({
+    x: canvas.width,
+    y: Math.random() * canvas.height,
+    width: Math.random() * 100,        
+    height: Math.random() * 100
+
+
+}) 
+
+
+}, 3000 )
 // dimensions
 // boxes.push({ //left wall 
 //     x: 20,
