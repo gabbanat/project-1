@@ -1,6 +1,6 @@
 // Frank Poth 11/16/2017
 
-(function() { "use strict"
+//(function() { "use strict"
 
   // the three main components of the example
   var controller, display, game;
@@ -384,4 +384,4 @@
 
   game.loop();
 
-})();
+//})();

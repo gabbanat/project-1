@@ -136,3 +136,11 @@ window.addEventListener("load", function(){
     update();
 });
 
+
+
+// collision checking for obstacles
+//if(player.jumping && player.velY >= 0 && player.y + player.width >= 145 + player.height) {
+  //  player.y = 145
+    //player.jumping = false
+    //player.velY = 0;
+//}
