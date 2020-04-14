@@ -12,7 +12,7 @@ var canvas = document.querySelector("canvas"),
         y: height - 15,
         width: 25,
         height: 25,
-        speed: 3,
+        speed: 6,
         velX: 0,
         velY: 0,
         jumping: false,
@@ -24,50 +24,24 @@ var canvas = document.querySelector("canvas"),
 
 var boxes = [];
 
-// dimensions
-// boxes.push({ //left wall 
-//     x: 20,
-//     y: 0,
-//     width: 10,
-//     height: height
-// });
-boxes.push({
-    x: 0,
-    y: height - 2,
+boxes.push({ //Ground 
+    x: 0, 
+    y: height - 2,  //This makes the ground 
     width: width,
     height: 50
 });
-// boxes.push({ //right wall 
-//     x: width - 10,
-//     y: 0,
-//     width: 50,
-//     height: height
-// });
 
-boxes.push({
-    x: 120,
-    y: 10,
-    width: 80,
-    height: 80
-});
-boxes.push({
-    x: 170,
-    y: 50,
-    width: 80,
-    height: 80
-});
-boxes.push({
-    x: 220,
-    y: 100,
-    width: 80,
-    height: 80
-});
-boxes.push({
-    x: 270,
-    y: 150,
-    width: 40,
-    height: 40
-});
+for(let i=0; i<20; i++){ //twenty blocks 
+    let box = {
+        x: i * 500 + 500, //space between blocks 
+        y: Math.random()*canvas.height + 300,
+        width: Math.random() * 50 + 120, //range between 120 and 170 
+        height: 20
+    }
+    boxes.push(box)
+}
+
+
 
 canvas.width = width
 canvas.height = height;
@@ -86,22 +60,24 @@ function update() {
         // right arrow
         if (player.velX < player.speed) {
             if(player.x < canvas.width *.6 ){
-                player.velX++;
+                player.velX+=7;
+            } else {
+                boxes.forEach(box => { 
+                    box.x-=7
+                })
             }
-            boxes.forEach(box => { 
-                box.x-=1
-            })
         }
     }
     if (keys[37] || keys[65]) {
         // left arrow
         if (player.velX > -player.speed) {
             if(player.x > canvas.width *.33 ){
-                player.velX--;
+                player.velX-=7;
+            } else {
+                boxes.forEach(box => { 
+                    box.x+=7
+                })
             }
-            boxes.forEach(box => { 
-                box.x+=1
-            })
         }
     }
 
