@@ -15,8 +15,8 @@ ctx = canvas.getContext("2d"),
   player = {
       x: width / 2,
       y: height - 5,
-      width : 5,
-      height : 5,
+      width : 15,
+      height : 15,
     speed : 3,
     velX : 0,
     velY : 0,
@@ -78,6 +78,7 @@ if (keys[39]){
     if(player.y >= height-player.height){
         player.y = height - player.height;
         player.jumping = false
+        player.velY = 0
     }
 
 
@@ -96,7 +97,7 @@ if (keys[39]){
     requestAnimationFrame(update);
 }
 let platform = {
-    x: 20,
+    x: 420,
     y: window.innerHeight - 50,
     height: 50,
     width: 200,
@@ -115,10 +116,19 @@ function detectCollision(){
        player.x + player.width > platform.x &&
        player.y < platform.y + platform.height &&
        player.y + player.height > platform.y) {
-        // collision detected! 
-       player.y = platform.y - player.height
-       player.velY = 0
-       
+        // collision detected!
+        console.log(player.y, platform.y-player.height)
+        //Hitting block from top
+        if(player.y <= platform.y - player.height + 10 && player.y >= platform.y - player.height - 10){ //the player landed on it
+            player.y = platform.y - player.height
+            player.jumping = false
+            player.velY = 0
+        }else if(player.x + player.width >= platform.x && player.x <= platform.x - 5) { //Hitting the right side
+            player.x = platform.x - player.width
+            console.log(player.x)
+            player.velX = 0
+        }
+
         console.log(player, platform)
     }
 }
@@ -139,8 +149,4 @@ window.addEventListener("load", function(){
 
 
 // collision checking for obstacles
-//if(player.jumping && player.velY >= 0 && player.y + player.width >= 145 + player.height) {
-  //  player.y = 145
-    //player.jumping = false
-    //player.velY = 0;
-//}
+

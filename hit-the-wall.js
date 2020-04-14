@@ -95,15 +95,21 @@
     // the world object holds information about our tile map
     world: {
 
-      columns:8,// just some basic info. no worries
-      rows:5,
-      tile_size:40,
+      columns:16,// just some basic info. no worries
+      rows:10,
+      tile_size:80,
 
       map:[0,0,0,0,0,0,0,0,// I went with a smaller map this time
            0,0,0,0,0,0,0,0,// 0s represent walkable tiles and everything else
            1,0,0,0,0,0,0,2,// represents a collision tile or wall tile
            3,0,0,4,0,0,2,5,// the different numbers correspond to different
-           5,5,5,5,5,5,5,5]// collision shapes.
+           5,5,5,5,5,5,5,5,
+           0,0,0,3,0,0,0,0,// I went with a smaller map this time
+           0,0,0,0,0,0,0,0,// 0s represent walkable tiles and everything else
+           1,0,0,0,0,0,0,2,// represents a collision tile or wall tile
+           3,0,0,4,0,0,2,5,// the different numbers correspond to different
+           5,5,5,5,5,5,5,5
+          ]// collision shapes.
 
     },
 
