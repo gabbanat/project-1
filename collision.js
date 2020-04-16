@@ -21,19 +21,19 @@ var boxes = [];
 boxes.push({
   //Ground
   x: 0,
-  y: height - 2, //This makes the ground
+  y: height - 10, //This makes the ground
   width: width,
   height: 50,
 });
 
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 10; i++) {
 
-    if(i === 20 - 1){
+    if(i === 10 - 1){
         let finish = {
             x: i * 300 + 500, //space between blocks
-            y: canvas.height /2,
+            y: canvas.height /(3/4),
             width: 50, //range between 120 and 170
-            height: 300,
+            height: 200,
 
         } 
     boxes.push(finish);
@@ -42,15 +42,31 @@ for (let i = 0; i < 20; i++) {
   let box = {
     x: i * 300 + 500, //space between blocks
     y: Math.random() * canvas.height + 150,
-    width: Math.random() * 70 + 90, //range between block sizes
+    width: Math.random() * 60 + 90, //range between block sizes
     height: 30,
 }
+  if(Math.floor(Math.random()*10) % 2 === 0 || Math.floor(Math.random()*10) % 3 === 0)  {
+    if(box.y >= canvas.height/2) {
+       box.dy = -1;
+       box.top =box.y-(0.2+0.2*Math.random())*height;
+       box.bottom = box.y;
+    }
+    
+    else  {
+      box.dy = 1;
+      box.top = box.y;
+      box.bottom = box.y+(0.2+0.2*Math.random())*height;
+    }
+    //console.log(box)
+  }
+  
 boxes.push(box);}
 }
 
 let boxesCopy = [...boxes].map(box => {return {...box} });
 
 function init (){
+    keys=[];  
     return player =   {
         x: width / 2,
         y: height - 15,
@@ -64,6 +80,8 @@ function init (){
         direction: "r"  
     };
 }
+const endBlock = new Image ();
+endBlock.src = "./images/gold pillar.png"
 
 const platform2 = new Image();
 platform2.src = "./images/new platform.png";
@@ -87,6 +105,10 @@ charImageL.src = "./images/boshy left.png";
 
 
 function update() {
+    
+
+
+
     // check keys
     if (keys[38] || keys[32] || keys[87]) {
         // up arrow or space
@@ -106,8 +128,8 @@ function update() {
             } else {
                 bckx-=3
                 bckx1-=3
-                if(bckx < -width) bckx = width;
-                if(bckx1 < -width) bckx1 = width;
+                if(bckx < -width) bckx = width-3;
+                if(bckx1 < -width) bckx1 = width-3;
                 boxes.forEach((box) => {
                     box.x -= 7;
                     
@@ -125,8 +147,8 @@ function update() {
       } else {
         bckx+=3
         bckx1+=3
-        if(bckx > width) bckx = -width;
-        if(bckx1 > width) bckx1 = -width;
+        if(bckx > width) bckx = 3-width;
+        if(bckx1 > width) bckx1 = 3-width;
         boxes.forEach((box) => {
           box.x += 7;
           
@@ -150,13 +172,27 @@ function update() {
   player.grounded = false;
   for (var i = 0; i < boxes.length; i++) {
      // ctx.rect(boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height);
+     // boxes[4] 
+    if(boxes[i].dy) { // should be if box.dy
+       //console.log(boxes[i])
+      boxes[i].y +=boxes[i].dy
+      if(boxes[i].y < boxesCopy[i].top) {
+         boxes[i].dy = 1;
+      } else if(boxes[i].y > boxesCopy[i].bottom) {
+        boxes[i].dy = -1;
+      } 
+    }
      if(i === boxes.length -1 )  {
         // platform 2 is the same as "finish line ()" (future)
-        ctx.drawImage(platform2 ,boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height)
-     } else{
+        ctx.drawImage(endBlock ,boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height)
+     } else if(i === 0) {
+     ctx.drawImage(platform2,boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height)
+
+     } 
+     else{
      ctx.drawImage(platform2,boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height)
     }
-    var dir = colCheck(player, boxes[i]);
+    var dir = colCheck(player, boxes[i], i);
 
     if (dir === "l" || dir === "r") {
       player.velX = 0;
@@ -173,9 +209,13 @@ function update() {
     player.velY = 0;
   }
   if (player.y > (canvas.height)) {
-      console.log('player')
       player = init();
+      alert("game over")
       boxes = [...boxesCopy].map(box => {return {...box} })
+  
+      if( player.x >= boxes.x){
+  alert("YOU WIN")}
+     
   }
   player.x += player.velX;
   player.y += player.velY;
@@ -188,7 +228,7 @@ function update() {
   requestAnimationFrame(update);
 }
 
-function colCheck(shapeA, shapeB) {
+function colCheck(shapeA, shapeB, index) {
   // get the vectors to check against
   var vX = shapeA.x + shapeA.width / 2 - (shapeB.x + shapeB.width / 2),
     vY = shapeA.y + shapeA.height / 2 - (shapeB.y + shapeB.height / 2),
@@ -199,6 +239,16 @@ function colCheck(shapeA, shapeB) {
 
   // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
   if (Math.abs(vX) < hWidths && Math.abs(vY) < hHeights) {
+    //this is collion is tru
+
+    if(index === boxes.length -1){    
+      // once collion occured w/ last obj... reload page and message you win.
+
+      window.location.reload()
+      alert("You Win!")
+    
+    }
+
     // figures out on which side we are colliding (top, bottom, left, or right)
     var oX = hWidths - Math.abs(vX),
       oY = hHeights - Math.abs(vY);
