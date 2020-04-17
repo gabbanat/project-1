@@ -1,10 +1,5 @@
- /*var audio = new Audio()
- audio.src="./worldMusic.mp3"
- audio.volume = 0.01;
- audio.play()*/
-
-
 (function () {
+ 
   var requestAnimationFrame =
     window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
@@ -109,13 +104,16 @@ const charImageL = new Image();
 charImageL.src = "./images/boshy left.png";
 
 
-
-
-
-
-function update() {
-    
-
+const audio = new Audio()
+ audio.src="./worldMusic.mp3"
+ audio.volume = 0.005
+ 
+ 
+ 
+ function update() {
+   audio.play()
+   
+   
 
 
     // check keys
