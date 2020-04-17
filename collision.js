@@ -1,3 +1,9 @@
+ /*var audio = new Audio()
+ audio.src="./worldMusic.mp3"
+ audio.volume = 0.01;
+ audio.play()*/
+
+
 (function () {
   var requestAnimationFrame =
     window.requestAnimationFrame ||
@@ -20,20 +26,20 @@ var boxes = [];
 
 boxes.push({
   //Ground
-  x: 0,
-  y: height - 10, //This makes the ground
-  width: width,
+  x: 100,
+  y: height - 50, //This makes the ground
+  width: width-500,
   height: 50,
 });
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 25; i++) {
 
-    if(i === 10 - 1){
+    if(i === 25 - 1){
         let finish = {
             x: i * 300 + 500, //space between blocks
-            y: canvas.height /(3/4),
-            width: 50, //range between 120 and 170
-            height: 200,
+            y: canvas.height /2,
+            width: 75, //range between 120 and 170
+            height: 500,
 
         } 
     boxes.push(finish);
@@ -47,15 +53,15 @@ for (let i = 0; i < 10; i++) {
 }
   if(Math.floor(Math.random()*10) % 2 === 0 || Math.floor(Math.random()*10) % 3 === 0)  {
     if(box.y >= canvas.height/2) {
-       box.dy = -1;
-       box.top =box.y-(0.2+0.2*Math.random())*height;
+       box.dy = -2;
+       box.top =box.y-(0.25+0.25*Math.random())*height;
        box.bottom = box.y;
     }
     
     else  {
-      box.dy = 1;
+      box.dy = 2;
       box.top = box.y;
-      box.bottom = box.y+(0.2+0.2*Math.random())*height;
+      box.bottom = box.y+(0.3+0.3*Math.random())*height;
     }
     //console.log(box)
   }
@@ -68,8 +74,8 @@ let boxesCopy = [...boxes].map(box => {return {...box} });
 function init (){
     keys=[];  
     return player =   {
-        x: width / 2,
-        y: height - 15,
+        x: width / 2 -300,
+        y: height - 100,
         width: 25,
         height: 25,
         speed: 6,
@@ -80,8 +86,11 @@ function init (){
         direction: "r"  
     };
 }
+const startPlatform = new Image();
+  startPlatform.src = "./images/startPlatform.png"
+
 const endBlock = new Image ();
-endBlock.src = "./images/gold pillar.png"
+endBlock.src = "./images/flag.png"
 
 const platform2 = new Image();
 platform2.src = "./images/new platform.png";
@@ -177,16 +186,16 @@ function update() {
        //console.log(boxes[i])
       boxes[i].y +=boxes[i].dy
       if(boxes[i].y < boxesCopy[i].top) {
-         boxes[i].dy = 1;
+         boxes[i].dy = 1.5;
       } else if(boxes[i].y > boxesCopy[i].bottom) {
-        boxes[i].dy = -1;
+        boxes[i].dy = -1.5;
       } 
     }
      if(i === boxes.length -1 )  {
         // platform 2 is the same as "finish line ()" (future)
         ctx.drawImage(endBlock ,boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height)
      } else if(i === 0) {
-     ctx.drawImage(platform2,boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height)
+     ctx.drawImage(startPlatform,boxes[i].x, boxes[i].y, boxes[i].width, boxes[i].height)
 
      } 
      else{
@@ -213,8 +222,6 @@ function update() {
       alert("game over")
       boxes = [...boxesCopy].map(box => {return {...box} })
   
-      if( player.x >= boxes.x){
-  alert("YOU WIN")}
      
   }
   player.x += player.velX;
